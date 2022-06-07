@@ -11,6 +11,9 @@ python3 -m venv venv
 source venv venv
 
 pip install -r requirements.txt
+
+# 安装 git hooks 到.git目录用于提交前格式校验（black/flake8）
+pre-commit install
 ```
 
 2. 修改配置
