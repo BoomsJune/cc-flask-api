@@ -47,9 +47,9 @@ def sign_middleware(expire=60):
     data = {}
     if content_type.startswith("application/json"):
         data = request.json
-    elif content_type.startswith(
-        "multipart/form-data"
-    ) or content_type.startswith("application/x-www-form-urlencoded"):
+    elif content_type.startswith("multipart/form-data") or content_type.startswith(
+        "application/x-www-form-urlencoded"
+    ):
         data = request.form
     else:
         data = request.args

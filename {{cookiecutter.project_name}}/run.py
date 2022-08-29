@@ -1,10 +1,6 @@
-from dotenv import load_dotenv, find_dotenv
+from flask.cli import load_dotenv
+from api import create_app
 
 
-load_dotenv(find_dotenv() or ".flaskenv")
-
-
-import api  # noqa: E402
-
-
-app = api.create_app()
+load_dotenv()
+app = create_app()

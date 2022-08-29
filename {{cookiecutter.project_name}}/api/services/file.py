@@ -43,10 +43,7 @@ class FileService:
         Returns:
             bool: 是否允许
         """
-        return (
-            "." in filename
-            and filename.rsplit(".", 1)[1].lower() in extensions
-        )
+        return "." in filename and filename.rsplit(".", 1)[1].lower() in extensions
 
     @classmethod
     def upload(cls, file, subdir: str, new_name: str = None) -> str:

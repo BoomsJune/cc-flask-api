@@ -17,12 +17,25 @@ class Parser(FlaskParser):
 parser = Parser()
 
 
-class PageArg(Schema):
-    """分页默认参数"""
+class PaginateReq(Schema):
+    """分页默认请求参数"""
 
     sort = fields.List(fields.Str(), missing=[])  # 排序
     current = fields.Int(missing=1)  # 当前页
     page_size = fields.Int(data_key="pageSize", missing=20)  # 最大页数
+
+
+def paginate_resp(schema: Schema) -> Schema:
+    """分页Pagination对象响应参数"""
+
+    class PaginateResp(Schema):
+
+        total = fields.Int()  # 总数
+        page = fields.Int(data_key="current")  # 当前页
+        per_page = fields.Int(data_key="pageSize")  # 页大小
+        items = fields.Nested(schema, many=True, dump_only=True)  # 数据项
+
+    return PaginateResp
 
 
 def response_ok(data=None, msg="ok", code=0) -> Response:
@@ -47,7 +60,7 @@ def response_ok(data=None, msg="ok", code=0) -> Response:
     )
 
 
-def response_err(msg="server error", code=-1, status_code=200) -> Response:
+def response_err(msg="server error", code=-1, status_code=400) -> Response:
     """响应失败格式化
 
     Args:

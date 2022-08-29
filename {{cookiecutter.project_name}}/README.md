@@ -11,22 +11,26 @@ python3 -m venv venv
 source venv venv
 
 pip install -r requirements.txt
+
+# git hooks
+pre-commit install
 ```
 
 2. 修改配置
 
-> - 默认加载`.flaskenv`的环境变量，后加载`.env`的环境变量
+> 默认加载`.flaskenv`的环境变量，若存在`.env`，则先加载`.env`的环境变量
 >
-> - 请在`.env`中修改配置，请勿提交`.env`
-
+> 本地配置请在`.env`中修改配置，请勿提交`.env`
 
 ```bash
 cp .flaskenv .env
 vim .env
 ```
 
-3. 数据库更新
-   > 若导入已有数据的数据库， 请先`truncate alembic_version`
+3. 数据库更新（可选）
+> 本地版本对齐：`flask db stamp head`
+> 
+> 若导入已有数据的数据库， 请先`truncate alembic_version`
 
 ```bash
 flask db migrate
@@ -38,16 +42,29 @@ flask db upgrade
 ```bash
 # 启动API
 flask run
+
+# 启动celery
+celery -A runcelery.celery worker
+celery -A runcelery.celery beat
 ```
 
 ## Deploy
 
-> 命令已集成到`deploy.sh`中，若不需要更新环境，可只执行`docker-compose up -d --build`
+> 生产环境使用`gunicorn`实现WSGI，相关配置在`gunicorn.config.py`
 
+### Docker
 ```bash
-# 1. build base image
-docker build -t {{cookiecutter.project_name}}:base -f Dockerfile.base .
+# 含环境更新使用deploy.sh
+sh deploy/docker/deploy.sh
 
-# 2. deploy
-docker-compose up -d --build
+# 仅更新代码使用restart.sh
+sh deploy/docker/restart.sh
+
+# 停止部署并删除容器
+sh deploy/docker/stop.sh
+```
+
+### supervisor
+```bash
+sh deploy/supervisor/deploy.sh
 ```

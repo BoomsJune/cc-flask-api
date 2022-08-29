@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 
-import api.config as config
 import api.router as router
 import api.log as log
 import api.exception as exception
@@ -18,7 +17,10 @@ def create_app(test_config: dict = None) -> Flask:
         Flask: flask app
     """
     app = Flask(__name__, instance_relative_config=True)
+
     # load config
+    import api.config as config
+
     app.config.from_object(config)
     if test_config:
         app.config.from_mapping(test_config)
@@ -27,11 +29,10 @@ def create_app(test_config: dict = None) -> Flask:
     log.init_app(app)
     exception.init_app(app)
 
+    CORS(app)
+
     db.init_app(app)
     jwt.init_app(app)
     celery.init_app(app)
 
-    CORS(app)
-
-    # app.logger.info(app.config)
     return app

@@ -1,4 +1,4 @@
-from .auth import AuthUser
+from .admin import AuthUser
 
 
 __all__ = [

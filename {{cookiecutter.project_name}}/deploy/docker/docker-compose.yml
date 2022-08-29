@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  {{cookiecutter.project_name}}:
+    image: {{cookiecutter.project_name}}
+    restart: always
+    command: bash -c "flask db migrate && flask db upgrade && gunicorn run:app"
+    volumes:
+      - ../../migrations:/app/migrations
+    ports:
+      - 15000:5000
+
+  {{cookiecutter.project_name}}_redis:
+    image: redis:alpine
+    restart: always
+    environment:
+      TZ: 'GMT+8'
+    hostname: redis
+
+  {{cookiecutter.project_name}}_celery_worker:
+    image: {{cookiecutter.project_name}}
+    restart: always
+    command: celery -A runcelery.celery worker
+    depends_on:
+      - {{cookiecutter.project_name}}_redis
+      - {{cookiecutter.project_name}}
+    links:
+      - {{cookiecutter.project_name}}_redis
+
+  {{cookiecutter.project_name}}_celery_beat:
+    image: {{cookiecutter.project_name}}
+    restart: always
+    command: celery -A runcelery.celery beat
+    depends_on:
+      - {{cookiecutter.project_name}}_redis
+      - {{cookiecutter.project_name}}
+    links:
+      - {{cookiecutter.project_name}}_redis
+      

@@ -37,7 +37,7 @@ def init_app(app):
     )
     default_handler.setFormatter(formatter)
 
-    if app.config.get("FLASK_ENV") == "production":
-        sentry_sdk.init(
-            app.config.get("SENTRY_DSN"), integrations=[FlaskIntegration()]
-        )
+    print(app.config.get("FLASK_DEBUG"))
+    if app.config.get("FLASK_DEBUG"):
+        app.logger.info("here")
+        sentry_sdk.init(app.config.get("SENTRY_DSN"), integrations=[FlaskIntegration()])

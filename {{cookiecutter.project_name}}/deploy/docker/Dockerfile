@@ -2,6 +2,8 @@
 
 FROM {{cookiecutter.project_name}}:base
 
+ENV TZ Asia/Shanghai
+
 WORKDIR /app
 COPY . .
 

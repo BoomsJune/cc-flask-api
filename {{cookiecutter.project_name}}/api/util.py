@@ -73,7 +73,6 @@ def now_str(fmt: str = "%Y-%m-%d %H:%M:%S") -> str:
 def command_execute(command: str) -> subprocess.CompletedProcess:
     """执行命令行"""
     p = subprocess.run(command.split(" "), capture_output=True, text=True)
-    # current_app.logger.info(f"{command}: {p.stdout}")
     if p.stderr:
         current_app.logger.error(f"{command}: {p.stderr}")
     return p

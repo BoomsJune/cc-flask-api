@@ -1,10 +1,8 @@
-from dotenv import load_dotenv, find_dotenv
+from flask.cli import load_dotenv
+from api import create_app
+from api.extensions import celery
 
-load_dotenv(find_dotenv() or ".flaskenv")
 
-
-from api.extensions import celery  # noqa: E402
-import api  # noqa: E402
-
-app = api.create_app()
+load_dotenv()
+app = create_app()
 celery = celery.init_app(app)

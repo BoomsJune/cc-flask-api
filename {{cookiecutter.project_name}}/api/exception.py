@@ -66,8 +66,6 @@ def init_app(app):
         messages = e.data.get("messages")
         desc = messages.get(
             "json",
-            messages.get(
-                "query", messages.get("form", messages.get("files", {}))
-            ),
+            messages.get("query", messages.get("form", messages.get("files", {}))),
         )
         return response_err(json.dumps(desc), e.code, e.code)

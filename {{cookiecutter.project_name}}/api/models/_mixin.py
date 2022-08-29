@@ -1,7 +1,8 @@
 from api.extensions.db import db
+from flask_sqlalchemy import Pagination
 
 
-class BaseModel(db.Model):
+class CRUDMixin(db.Model):
     """基础数据模型 含增删改查"""
 
     __abstract__ = True
@@ -34,8 +35,8 @@ class BaseModel(db.Model):
 
     @classmethod
     def get_all_by_page(
-        cls, current=1, page_size=20, query=None, order_by: list = None
-    ) -> dict:
+        cls, current=1, page_size=20, query=None, order_by: list = None, **kwargs
+    ) -> Pagination:
         """分页获取所有数据
 
         Args:
@@ -47,17 +48,11 @@ class BaseModel(db.Model):
                                        Defaults to None.
 
         Returns:
-            dict:
-                list: 数据列表
-                total: 数据总数
-                current: 当前页数
-                page_size: 页面大小
+            Pagination: sqlalchemy分页对象
         """
         max_size = 100
-        page_size = min(page_size, max_size)
 
         query = query if query is not None else cls.base_query()
-        total_count = query.count()
 
         if order_by is not None:
             _orders = [
@@ -68,10 +63,16 @@ class BaseModel(db.Model):
             ]
             query = query.order_by(*_orders)
 
-        query = query.limit(page_size).offset((current - 1) * page_size)
-        return {
-            "list": query.all(),
-            "total": total_count,
-            "current": current,
-            "page_size": page_size,
-        }
+        return query.paginate(
+            page=current, per_page=page_size, error_out=False, max_per_page=max_size
+        )
+
+
+class LogMixin(db.Model):
+    """标记需要操作记录的model
+
+    继承LogMixin的模型类最好补充以下信息：
+    1. 重写__repr__()
+    """
+
+    __abstract__ = True
