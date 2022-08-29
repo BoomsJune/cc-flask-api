@@ -12,7 +12,7 @@ source venv venv
 
 pip install -r requirements.txt
 
-# git hooks
+# 安装 git hooks 到.git目录用于提交前格式校验（black/flake8）
 pre-commit install
 ```
 
