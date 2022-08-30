@@ -1,7 +1,7 @@
 # cc-flask-api
 通过cookiecutter创建Flask API脚手架
 
-# Usage
+## Usage
 1. 安装[cookiecutter](https://cookiecutter.readthedocs.io/en/stable/index.html)
 ```bash
 pip install cookiecutter
@@ -20,5 +20,5 @@ $ cookiecutter git@github.com:BoomsJune/cc-flask-api.git
 | project_description | 为flask和我量身打造的api | 项目描述 |
 
 
-# TODO
+## TODO
 - [ ] flask命令行创建超级用户
