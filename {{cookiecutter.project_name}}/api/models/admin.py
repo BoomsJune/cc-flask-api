@@ -34,7 +34,7 @@ class AuthUser(CRUDMixin):
     @classmethod
     def hash_password(cls, password: str) -> str:
         """哈希密码"""
-        key = current_app.config.get("SECRET_KEY")
+        key = current_app.config["SECRET_KEY"]
         return md5(f"{password}&{key}")
 
     @classmethod

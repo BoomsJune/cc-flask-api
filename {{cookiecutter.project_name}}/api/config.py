@@ -2,10 +2,6 @@ import os
 import datetime
 
 
-# flask
-FLASK_DEBUG = os.getenv("FLASK_DEBUG", "True").lower() in ("true", "1")
-SECRET_KEY = os.getenv("SECRET_KEY", "development_key")
-
 # api
 SIGN_SECRET_KEY = os.getenv("SIGN_SECRET_KEY", "development_key")
 UPLOAD_PATH = os.getenv(
@@ -31,12 +27,12 @@ REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 CELERY_CONFIG = {
     "broker_url": os.getenv("CELERY_BROKER_URL", "redis://localhost:6379"),
     "result_backend": os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379"),
-    'beat_schedule': {
+    "beat_schedule": {
         "index": {
             "task": "api.tasks.index.index",
             "schedule": datetime.timedelta(seconds=10),
         },
-    }
+    },
 }
 
 # jwt

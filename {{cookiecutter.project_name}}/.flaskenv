@@ -1,6 +1,7 @@
 FLASK_APP=api
+FLASK_ENV=development
 FLASK_DEBUG=true
-SECRET_KEY=development_key
+FLASK_SECRET_KEY=development_key
 SIGN_SECRET_KEY=development_key
 JWT_SECRET_KEY=development_key
 SENTRY_DSN=
