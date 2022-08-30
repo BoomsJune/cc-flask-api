@@ -44,8 +44,8 @@ flask db upgrade
 flask run
 
 # 启动celery
-celery -A runcelery.celery worker
-celery -A runcelery.celery beat
+celery -A runcelery.celery worker -l INFO
+celery -A runcelery.celery beat -l INFO
 ```
 
 ## Deploy
