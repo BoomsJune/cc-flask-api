@@ -6,13 +6,8 @@ celery = Celery()
 
 def init_app(app):
     """初始化celery"""
-    celery = Celery(
-        app.import_name,
-        backend=app.config["CELERY_RESULT_BACKEND"],
-        broker=app.config["CELERY_BROKER_URL"],
-        include=["api.tasks"],
-    )
-    celery.conf.update(app.config)
+    celery = Celery(app.import_name, include=["api.tasks"])
+    celery.conf.update(app.config["CELERY_CONFIG"])
 
     class ContextTask(celery.Task):
         def __call__(self, *args, **kwargs):

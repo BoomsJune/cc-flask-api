@@ -20,7 +20,7 @@ services:
   {{cookiecutter.project_name}}_celery_worker:
     image: {{cookiecutter.project_name}}
     restart: always
-    command: celery -A runcelery.celery worker
+    command: celery -A runcelery.celery worker -l INFO
     depends_on:
       - {{cookiecutter.project_name}}_redis
       - {{cookiecutter.project_name}}
@@ -30,7 +30,7 @@ services:
   {{cookiecutter.project_name}}_celery_beat:
     image: {{cookiecutter.project_name}}
     restart: always
-    command: celery -A runcelery.celery beat
+    command: celery -A runcelery.celery beat -l INFO
     depends_on:
       - {{cookiecutter.project_name}}_redis
       - {{cookiecutter.project_name}}

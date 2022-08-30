@@ -15,7 +15,7 @@ autorestart=true
 
 [program:${SPUG_APP_NAME}_celery_worker]
 directory=${SPUG_DST_DIR}
-command=${python_path}/bin/celery -A runcelery.celery worker
+command=${python_path}/bin/celery -A runcelery.celery worker -l INFO
 stdout_logfile=${LOG_PATH}/${SPUG_APP_NAME}/sup_celery_worker.log
 redirect_stderr=true
 autostart=true
@@ -23,7 +23,7 @@ autorestart=true
 
 [program:${SPUG_APP_NAME}_celery_beat]
 directory=${SPUG_DST_DIR}
-command=${python_path}/bin/celery -A runcelery.celery beat
+command=${python_path}/bin/celery -A runcelery.celery beat -l INFO
 stdout_logfile=${LOG_PATH}/${SPUG_APP_NAME}/sup_celery_beat.log
 redirect_stderr=true
 autostart=true
