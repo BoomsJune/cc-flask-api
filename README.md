@@ -19,3 +19,6 @@ $ cookiecutter git@github.com:BoomsJune/cc-flask-api.git
 | project_title | 我的API | 项目标题 |
 | project_description | 为flask和我量身打造的api | 项目描述 |
 
+
+# TODO
+- [ ] flask命令行创建超级用户
