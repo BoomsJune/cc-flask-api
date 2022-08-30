@@ -1,18 +1,21 @@
 # cc-flask-api
-Flask API scaffold by cookiecutter
+通过cookiecutter创建Flask API脚手架
 
 # Usage
-1. install cookiecutter
-[cookiecutter 参考文档](https://cookiecutter.readthedocs.io/en/stable/index.html)
+1. 安装[cookiecutter](https://cookiecutter.readthedocs.io/en/stable/index.html)
+```bash
+pip install cookiecutter
+```
 
-2. use cookiecutter
+2. 创建Flask API
 
 ```bash
 $ cookiecutter git@github.com:BoomsJune/cc-flask-api.git
-You've downloaded /Users/zk2021/.cookiecutters/cc-flask-api before. Is it okay to delete and re-download it? [yes]: yes
-# input project info
-project_name [my_api]: 
-project_title [我的API]: 
-project_description [为flask和我量身打造的api]: 
 ```
+填写项目基本信息：
+| 名称  | 默认值  | 说明  |
+| --- | --- | --- |
+| project_name | my_api | 项目标识，项目目录名 |
+| project_title | 我的API | 项目标题 |
+| project_description | 为flask和我量身打造的api | 项目描述 |
 
