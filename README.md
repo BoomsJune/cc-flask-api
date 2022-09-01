@@ -21,5 +21,5 @@ $ cookiecutter git@github.com:BoomsJune/cc-flask-api.git
 
 
 ## TODO
-- [ ] flask命令行创建超级用户
+- [x] flask命令行创建超级用户
 - [ ] 集成测试用例

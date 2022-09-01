@@ -19,6 +19,9 @@ class AuthUser(CRUDMixin):
     is_active = db.Column(
         db.SmallInteger, nullable=False, default=1, comment="是否可用"
     )  # 0不可用，1可用
+    is_superuser = db.Column(
+        db.SmallInteger, nullable=False, default=0, comment="是否超级用户"
+    )  # 0否，1是
     created_ts = db.Column(db.Integer, nullable=False, comment="创建时间戳")
     created_by = db.Column(db.Integer, nullable=False, comment="创建人")
 
@@ -38,8 +41,8 @@ class AuthUser(CRUDMixin):
         return md5(f"{password}&{key}")
 
     @classmethod
-    def get_by_name(cls, name) -> AuthUser:
-        return cls.query.filter_by(name=name).first()
+    def get_by_username(cls, username) -> AuthUser:
+        return cls.query.filter_by(username=username).first()
 
 
 class OperateLog(CRUDMixin):

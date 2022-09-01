@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 import api.router as router
 import api.exception as exception
-from api.extensions import jwt, db, celery, log
+from api.extensions import jwt, db, celery, log, click
 
 
 def create_app(test_config: dict = None) -> Flask:
@@ -31,6 +31,7 @@ def create_app(test_config: dict = None) -> Flask:
     db.init_app(app)
     jwt.init_app(app)
     celery.init_app(app)
+    click.init_app(app)
 
     CORS(app)
 
