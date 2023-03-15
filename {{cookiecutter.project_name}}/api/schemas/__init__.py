@@ -60,7 +60,7 @@ def response_ok(data=None, msg="ok", code=0) -> Response:
     )
 
 
-def response_err(msg="server error", code=-1, status_code=400) -> Response:
+def response_err(msg="server error", code=400, status_code=400) -> Response:
     """响应失败格式化
 
     Args:

@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from flask import current_app
 from flask_jwt_extended import current_user
+from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import JSON
 
 from ._mixin import db, CRUDMixin
-from api.util import now_ts, md5
+from api.utils.stringx import md5
+from api.utils.timex import now_ts
 
 
 class AuthUser(CRUDMixin):
@@ -16,12 +18,8 @@ class AuthUser(CRUDMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), unique=True, nullable=False, comment="用户名")
     password = db.Column(db.String(32), nullable=False, default="", comment="密码")
-    is_active = db.Column(
-        db.SmallInteger, nullable=False, default=1, comment="是否可用"
-    )  # 0不可用，1可用
-    is_superuser = db.Column(
-        db.SmallInteger, nullable=False, default=0, comment="是否超级用户"
-    )  # 0否，1是
+    is_active = db.Column(db.SmallInteger, nullable=False, default=1, comment="是否可用")  # 0不可用，1可用
+    is_superuser = db.Column(db.SmallInteger, nullable=False, default=0, comment="是否超级用户")  # 0否，1是
     created_ts = db.Column(db.Integer, nullable=False, comment="创建时间戳")
     created_by = db.Column(db.Integer, nullable=False, comment="创建人")
 
@@ -52,23 +50,18 @@ class OperateLog(CRUDMixin):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     operate = db.Column(db.String(32), nullable=False, default="", comment="操作")
-    model = db.Column(
-        db.String(32), nullable=False, default="", index=True, comment="数据模型"
-    )
+    model = db.Column(db.String(32), nullable=False, default="", index=True, comment="数据模型")
     model_key = db.Column(db.String(64), nullable=False, index=True, comment="模型唯一键")
     diff_values = db.Column(JSON, nullable=False, default="{}", comment="变更的数据")
     endpoint = db.Column(db.String(32), nullable=False, default="", comment="路由标识")
-    note = db.Column(
-        db.String(128), nullable=False, comment="备注"
-    )  # 默认为model的__repr__()
+    note = db.Column(db.String(128), nullable=False, comment="备注")  # 默认为model的__repr__()
     request_method = db.Column(db.String(16), nullable=False, comment="请求方法")
     request_path = db.Column(db.String(16), nullable=False, comment="请求路径")
     is_succeed = db.Column(db.SmallInteger, nullable=False, default=0, comment="是否成功")
 
-    created_ts = db.Column(db.Integer, nullable=False, comment="创建时间戳")
+    created_at = db.Column(db.TIMESTAMP, server_default=func.now(), nullable=False, comment="创建日期")
     created_by = db.Column(db.Integer, nullable=False, comment="创建人")
 
     def __init__(self, **kwargs):
-        self.created_ts = now_ts()
         self.created_by = current_user.id if current_user else 0
         super().__init__(**kwargs)

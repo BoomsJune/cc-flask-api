@@ -21,8 +21,6 @@ class UserFormReq(Schema):
 
     id = fields.Int()
     username = fields.Str(required=True, validate=validate.Length(max=64))
-    password = fields.Str(
-        required=True, validate=validate.Length(max=32), data_key="nickName"
-    )
+    password = fields.Str(required=True, validate=validate.Length(max=32), data_key="nickName")
     is_active = fields.Int(required=True, data_key="isActive")
     roles = fields.List(fields.Str())

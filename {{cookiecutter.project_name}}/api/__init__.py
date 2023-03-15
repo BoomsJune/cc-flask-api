@@ -25,9 +25,10 @@ def create_app(test_config: dict = None) -> Flask:
     if test_config:
         app.config.from_mapping(test_config)
 
-    router.init_app(app)
     log.init_app(app)
+    router.init_app(app)
     exception.init_app(app)
+
     db.init_app(app)
     jwt.init_app(app)
     celery.init_app(app)

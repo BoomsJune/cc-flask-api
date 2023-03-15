@@ -5,6 +5,8 @@ from flask.logging import default_handler
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 
+from api import config
+
 
 class RequestFormatter(logging.Formatter):
     """请求日志格式化"""
@@ -38,4 +40,4 @@ def init_app(app):
     default_handler.setFormatter(formatter)
 
     if not app.config.get("FLASK_DEBUG"):
-        sentry_sdk.init(app.config.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
+        sentry_sdk.init(config.SENTRY_DSN, integrations=[FlaskIntegration()])

@@ -7,6 +7,8 @@ class CRUDMixin(db.Model):
 
     __abstract__ = True
 
+    MAX_PAGE_SIZE = 100  # 最大页大小
+
     def create(self):
         """创建"""
         db.session.add(self)
@@ -34,10 +36,8 @@ class CRUDMixin(db.Model):
         return cls.base_query().all()
 
     @classmethod
-    def get_all_by_page(
-        cls, current=1, page_size=20, query=None, order_by: list = None, **kwargs
-    ) -> Pagination:
-        """分页获取所有数据
+    def get_by_page(cls, current=1, page_size=20, query=None, order_by: list = None, **kwargs) -> Pagination:
+        """分页获取数据
 
         Args:
             current (int, optional): 当前页. Defaults to 1.
@@ -50,22 +50,13 @@ class CRUDMixin(db.Model):
         Returns:
             Pagination: sqlalchemy分页对象
         """
-        max_size = 100
-
         query = query if query is not None else cls.base_query()
 
         if order_by is not None:
-            _orders = [
-                getattr(cls, b[1:]).desc()
-                if b.startswith("-")
-                else getattr(cls, b).asc()
-                for b in order_by
-            ]
+            _orders = [getattr(cls, b[1:]).desc() if b.startswith("-") else getattr(cls, b).asc() for b in order_by]
             query = query.order_by(*_orders)
 
-        return query.paginate(
-            page=current, per_page=page_size, error_out=False, max_per_page=max_size
-        )
+        return query.paginate(page=current, per_page=page_size, error_out=False, max_per_page=cls.MAX_PAGE_SIZE)
 
 
 class LogMixin(db.Model):

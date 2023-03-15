@@ -11,6 +11,13 @@ bp = Blueprint("auth", __name__, url_prefix="auth")
 @parser.use_args(auth.UserListReq, location="query")
 def user_list(args):
     """用户列表查询"""
-    p = AuthUser.get_all_by_page(**args)
+    from api.exception import APIException
+
+    try:
+        1 / 0
+    except Exception as e:
+        raise APIException("errrrrrr", err=e)
+
+    p = AuthUser.get_by_page(**args)
     data = paginate_resp(auth.UserSchema)().dump(p)
     return response_ok(data)

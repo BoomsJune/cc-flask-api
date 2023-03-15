@@ -2,26 +2,26 @@ import os
 import datetime
 
 
-# api
-SIGN_SECRET_KEY = os.getenv("SIGN_SECRET_KEY", "development_key")
-UPLOAD_PATH = os.getenv(
-    "UPLOAD_PATH", os.path.join(os.path.abspath(os.curdir), "instance/upload")
-)
+def to_bool(s: str) -> bool:
+    return s.lower() in ("true", "1")
+
 
 # log
 SENTRY_DSN = os.getenv("SENTRY_DSN", "")
 
+
 # db
-SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv(
-    "SQLALCHEMY_TRACK_MODIFICATIONS", "False"
-).lower() in ("true", "1")
-SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", "")
-SQLALCHEMY_BINDS = {
+SQLALCHEMY_ECHO = to_bool(os.getenv("SQLALCHEMY_ECHO", "False"))  # 打印所有执行的SQL
+SQLALCHEMY_TRACK_MODIFICATIONS = to_bool(os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS", "False"))  # 追踪修改并发出signal，耗内存
+SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", "")  # 默认连接的数据库
+SQLALCHEMY_BINDS = {  # 指定bind_key连接的数据库
     # "gamedb": os.getenv("SQLALCHEMY_BINDS_GAMEDB", ""),
 }
 
+
 # redis
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+
 
 # celery
 CELERY_CONFIG = {
@@ -34,6 +34,7 @@ CELERY_CONFIG = {
         },
     },
 }
+
 
 # jwt
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "development_key")
